@@ -1,7 +1,7 @@
 metadata_root: "./data/dataset/metadata/dataset_root.json"
 log_directory: "./log/latent_diffusion"
 project: "audioldm"
-precision: "high"
+precision: "medium"
 
 variables:
   sampling_rate: &sampling_rate 16000 
