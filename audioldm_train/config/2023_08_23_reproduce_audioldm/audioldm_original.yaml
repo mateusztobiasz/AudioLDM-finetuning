@@ -55,7 +55,7 @@ model:
       params: 
         reload_from_ckpt: "data/checkpoints/vae_mel_16k_64bins.ckpt"
         sampling_rate: *sampling_rate
-        batchsize: 4
+        batchsize: 1
         monitor: val/rec_loss
         image_key: fbank
         subband: 1

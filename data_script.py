@@ -38,9 +38,9 @@ val_data = []
 
 for i, row in data.iterrows():
     datapoint = {"wav": row["audio"], "caption": row["caption"]}
-    if i % 5 == 0:
+    if i % 42 == 0:
         test_data.append(datapoint)
-    elif i % 5 == 1:
+    elif i % 42 == 1:
         val_data.append(datapoint)
     else:
         train_data.append(datapoint)
