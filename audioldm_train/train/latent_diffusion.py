@@ -107,15 +107,25 @@ def main(configs, config_yaml_path, exp_group_name, exp_name, perform_validation
 
     wandb_path = os.path.join(log_path, exp_group_name, exp_name)
 
+    # checkpoint_callback = ModelCheckpoint(
+    #     dirpath=checkpoint_path,
+    #     monitor="global_step",
+    #     mode="max",
+    #     filename="checkpoint-fad-{val/frechet_inception_distance:.2f}-global_step={global_step:.0f}",
+    #     every_n_train_steps=save_checkpoint_every_n_steps,
+    #     save_top_k=save_top_k,
+    #     auto_insert_metric_name=False,
+    #     save_last=False,
+    # )
     checkpoint_callback = ModelCheckpoint(
         dirpath=checkpoint_path,
-        monitor="global_step",
-        mode="max",
+        monitor="val/frechet_inception_distance",
+        mode="min",
         filename="checkpoint-fad-{val/frechet_inception_distance:.2f}-global_step={global_step:.0f}",
-        every_n_train_steps=save_checkpoint_every_n_steps,
-        save_top_k=save_top_k,
-        auto_insert_metric_name=False,
-        save_last=False,
+        #every_n_train_steps=save_checkpoint_every_n_steps,
+        save_top_k=1,
+        #auto_insert_metric_name=False,
+        #save_last=False,
     )
 
     os.makedirs(checkpoint_path, exist_ok=True)
