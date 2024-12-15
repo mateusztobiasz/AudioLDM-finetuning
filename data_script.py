@@ -38,7 +38,7 @@ val_data = []
 
 for i, row in data.iterrows():
     datapoint = {"wav": row["audio"], "caption": row["caption"]}
-    if i % 42 == 0:
+    if i % 42 == 6:
         test_data.append(datapoint)
     elif i % 42 == 1:
         val_data.append(datapoint)
