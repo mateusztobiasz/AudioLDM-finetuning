@@ -22,22 +22,22 @@ os.makedirs(datafiles_dir, exist_ok=True)
 os.makedirs(testset_subset_dir, exist_ok=True)
 os.makedirs(valset_subset_dir, exist_ok=True)
 
-# Copy audio files to the audioset directory
-for audio_file in tqdm(data["audio"]):
-    file_name = os.path.basename(audio_file)
-    new_path = os.path.join(audioset_dir, file_name)
-    os.makedirs(os.path.dirname(new_path), exist_ok=True)
-    try:
-        shutil.copy(audio_file, new_path)
-    except FileNotFoundError as e:
-        print(f"Error copying {audio_file}: {e}")
+# # Copy audio files to the audioset directory
+# for audio_file in tqdm(data["audio"]):
+#     file_name = os.path.basename(audio_file)
+#     new_path = os.path.join(audioset_dir, file_name)
+#     os.makedirs(os.path.dirname(new_path), exist_ok=True)
+#     try:
+#         shutil.copy(audio_file, new_path)
+#     except FileNotFoundError as e:
+#         print(f"Error copying {audio_file}: {e}")
 
 train_data = []
 test_data = []
 val_data = []
 
 for i, row in data.iterrows():
-    datapoint = {"wav": os.path.join(ROOT_DIR, row["audio"]), "caption": row["caption"]}
+    datapoint = {"wav": row["audio"], "caption": row["caption"]}
     if i % 5 == 0:
         test_data.append(datapoint)
     elif i % 5 == 1:
