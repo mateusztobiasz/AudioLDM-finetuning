@@ -1,5 +1,5 @@
-from .models_hifires import Generator_HiFiRes
 from .models import Generator as Generator
+from .models_hifires import Generator_HiFiRes
 
 
 class AttrDict(dict):

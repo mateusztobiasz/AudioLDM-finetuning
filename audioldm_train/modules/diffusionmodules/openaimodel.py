@@ -1,23 +1,22 @@
+import math
 from abc import abstractmethod
 from functools import partial
-import math
 from typing import Iterable
 
 import numpy as np
 import torch as th
 import torch.nn as nn
 import torch.nn.functional as F
-
+from audioldm_train.modules.diffusionmodules.attention import SpatialTransformer
 from audioldm_train.utilities.diffusion_util import (
+    avg_pool_nd,
     checkpoint,
     conv_nd,
     linear,
-    avg_pool_nd,
-    zero_module,
     normalization,
     timestep_embedding,
+    zero_module,
 )
-from audioldm_train.modules.diffusionmodules.attention import SpatialTransformer
 
 
 # dummy replace
@@ -584,9 +583,11 @@ class UNetModel(nn.Module):
                 layers = [
                     ResBlock(
                         ch,
-                        time_embed_dim
-                        if (not self.use_extra_film_by_concat)
-                        else time_embed_dim * 2,
+                        (
+                            time_embed_dim
+                            if (not self.use_extra_film_by_concat)
+                            else time_embed_dim * 2
+                        ),
                         dropout,
                         out_channels=mult * model_channels,
                         dims=dims,
@@ -644,9 +645,11 @@ class UNetModel(nn.Module):
                     TimestepEmbedSequential(
                         ResBlock(
                             ch,
-                            time_embed_dim
-                            if (not self.use_extra_film_by_concat)
-                            else time_embed_dim * 2,
+                            (
+                                time_embed_dim
+                                if (not self.use_extra_film_by_concat)
+                                else time_embed_dim * 2
+                            ),
                             dropout,
                             out_channels=out_ch,
                             dims=dims,
@@ -676,9 +679,11 @@ class UNetModel(nn.Module):
         middle_layers = [
             ResBlock(
                 ch,
-                time_embed_dim
-                if (not self.use_extra_film_by_concat)
-                else time_embed_dim * 2,
+                (
+                    time_embed_dim
+                    if (not self.use_extra_film_by_concat)
+                    else time_embed_dim * 2
+                ),
                 dropout,
                 dims=dims,
                 use_checkpoint=use_checkpoint,
@@ -712,9 +717,11 @@ class UNetModel(nn.Module):
         middle_layers.append(
             ResBlock(
                 ch,
-                time_embed_dim
-                if (not self.use_extra_film_by_concat)
-                else time_embed_dim * 2,
+                (
+                    time_embed_dim
+                    if (not self.use_extra_film_by_concat)
+                    else time_embed_dim * 2
+                ),
                 dropout,
                 dims=dims,
                 use_checkpoint=use_checkpoint,
@@ -732,9 +739,11 @@ class UNetModel(nn.Module):
                 layers = [
                     ResBlock(
                         ch + ich,
-                        time_embed_dim
-                        if (not self.use_extra_film_by_concat)
-                        else time_embed_dim * 2,
+                        (
+                            time_embed_dim
+                            if (not self.use_extra_film_by_concat)
+                            else time_embed_dim * 2
+                        ),
                         dropout,
                         out_channels=model_channels * mult,
                         dims=dims,
@@ -789,9 +798,11 @@ class UNetModel(nn.Module):
                     layers.append(
                         ResBlock(
                             ch,
-                            time_embed_dim
-                            if (not self.use_extra_film_by_concat)
-                            else time_embed_dim * 2,
+                            (
+                                time_embed_dim
+                                if (not self.use_extra_film_by_concat)
+                                else time_embed_dim * 2
+                            ),
                             dropout,
                             out_channels=out_ch,
                             dims=dims,

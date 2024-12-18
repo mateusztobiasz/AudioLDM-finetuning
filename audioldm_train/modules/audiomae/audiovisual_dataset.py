@@ -1,15 +1,17 @@
 import json
 import random
-from tqdm import tqdm
-import torch
+
 import decord
+import torch
+from tqdm import tqdm
 
 decord.bridge.set_bridge("torch")
-import torchaudio
 from math import ceil
-from torch.utils.data import Dataset, DataLoader
-import pandas as pd
+
 import numpy as np
+import pandas as pd
+import torchaudio
+from torch.utils.data import DataLoader, Dataset
 
 
 class AudioVisualDataset(Dataset):

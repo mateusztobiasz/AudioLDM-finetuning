@@ -8,14 +8,14 @@
 # thanks!
 
 
-import os
 import math
+import os
+
+import numpy as np
 import torch
 import torch.nn as nn
-import numpy as np
-from einops import repeat
-
 from audioldm_train.utilities.model_util import instantiate_from_config
+from einops import repeat
 
 
 def make_beta_schedule(

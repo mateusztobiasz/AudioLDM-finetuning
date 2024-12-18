@@ -5,26 +5,22 @@
 # below codes are based and referred from https://github.com/microsoft/Swin-Transformer
 # Swin Transformer for Computer Vision: https://arxiv.org/pdf/2103.14030.pdf
 
+import collections.abc
+import math
+import random
+import warnings
+from itertools import repeat
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from itertools import repeat
-import collections.abc
-import math
-import warnings
-
-from torch.nn.init import _calculate_fan_in_and_fan_out
 import torch.utils.checkpoint as checkpoint
-
-import random
-
-from torchlibrosa.stft import Spectrogram, LogmelFilterBank
+from torch.nn.init import _calculate_fan_in_and_fan_out
 from torchlibrosa.augmentation import SpecAugmentation
+from torchlibrosa.stft import LogmelFilterBank, Spectrogram
 
-from itertools import repeat
+from .feature_fusion import AFF, DAF, iAFF
 from .utils import do_mixup, interpolate
-
-from .feature_fusion import iAFF, AFF, DAF
 
 
 # from PyTorch internals
@@ -736,9 +732,9 @@ class BasicLayer(nn.Module):
                     qk_scale=qk_scale,
                     drop=drop,
                     attn_drop=attn_drop,
-                    drop_path=drop_path[i]
-                    if isinstance(drop_path, list)
-                    else drop_path,
+                    drop_path=(
+                        drop_path[i] if isinstance(drop_path, list) else drop_path
+                    ),
                     norm_layer=norm_layer,
                     norm_before_mlp=norm_before_mlp,
                 )

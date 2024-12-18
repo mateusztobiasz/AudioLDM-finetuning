@@ -1,32 +1,31 @@
 import sys
 
 sys.path.append("src")
-import torch
 import logging
+
+import numpy as np
+import torch
 import torch.nn as nn
-from audioldm_train.modules.clap.open_clip import create_model
-from audioldm_train.modules.clap.training.data import get_audio_features
-
-import torchaudio
-from transformers import (
-    RobertaTokenizer,
-    AutoTokenizer,
-    T5EncoderModel,
-    MT5EncoderModel,
-)
 import torch.nn.functional as F
+import torchaudio
 from audioldm_train.modules.audiomae.AudioMAE import Vanilla_AudioMAE
-from audioldm_train.modules.phoneme_encoder.encoder import TextEncoder
-
-from transformers import SpeechT5Processor, AutoTokenizer, GPT2Model, GPT2Tokenizer
-from transformers.models.speecht5.modeling_speecht5 import SpeechT5EncoderWithTextPrenet
-
-from audioldm_train.modules.audiomae.sequence_gen.model import CLAP2AudioMAE
+from audioldm_train.modules.audiomae.sequence_gen.model import CLAP2AudioMAE, Prenet
 from audioldm_train.modules.audiomae.sequence_gen.sequence_input import (
     Sequence2AudioMAE,
 )
-import numpy as np
-from audioldm_train.modules.audiomae.sequence_gen.model import Prenet
+from audioldm_train.modules.clap.open_clip import create_model
+from audioldm_train.modules.clap.training.data import get_audio_features
+from audioldm_train.modules.phoneme_encoder.encoder import TextEncoder
+from transformers import (
+    AutoTokenizer,
+    GPT2Model,
+    GPT2Tokenizer,
+    MT5EncoderModel,
+    RobertaTokenizer,
+    SpeechT5Processor,
+    T5EncoderModel,
+)
+from transformers.models.speecht5.modeling_speecht5 import SpeechT5EncoderWithTextPrenet
 
 """
 The model forward function can return three types of data:

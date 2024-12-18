@@ -3,11 +3,11 @@ import sys
 sys.path.append("src/clap")
 
 import os
-import torch
+
 import librosa
+import torch
 from open_clip import create_model
-from training.data import get_audio_features
-from training.data import int16_to_float32, float32_to_int16
+from training.data import float32_to_int16, get_audio_features, int16_to_float32
 from transformers import RobertaTokenizer
 
 tokenize = RobertaTokenizer.from_pretrained("roberta-base")

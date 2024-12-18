@@ -2,15 +2,15 @@
 # Email: haoheliu@gmail.com
 # Date: 11 Feb 2023
 
-import os
 import json
+import os
 
+import matplotlib
+import numpy as np
 import torch
 import torch.nn.functional as F
-import numpy as np
-import matplotlib
-from scipy.io import wavfile
 from matplotlib import pyplot as plt
+from scipy.io import wavfile
 
 matplotlib.use("Agg")
 

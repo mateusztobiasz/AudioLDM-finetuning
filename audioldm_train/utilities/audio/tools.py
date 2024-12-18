@@ -1,9 +1,8 @@
-import torch
 import numpy as np
-from scipy.io.wavfile import write
+import torch
 import torchaudio
-
 from audioldm_train.utilities.audio.audio_processing import griffin_lim
+from scipy.io.wavfile import write
 
 
 def get_mel_from_wav(audio, _stft):

@@ -1,48 +1,42 @@
-from multiprocessing.sharedctypes import Value
+import datetime
+import os
 import statistics
 import sys
-import os
-from tkinter import E
-
-import torch
-import torch.nn as nn
-import numpy as np
-import pytorch_lightning as pl
-from torch.optim.lr_scheduler import LambdaLR
-from einops import rearrange, repeat
 from contextlib import contextmanager
 from functools import partial
-from tqdm import tqdm
-from torchvision.utils import make_grid
-from pytorch_lightning.utilities.rank_zero import rank_zero_only
+from multiprocessing.sharedctypes import Value
+from tkinter import E
+
+import numpy as np
+import pytorch_lightning as pl
+import soundfile as sf
+import torch
+import torch.nn as nn
 from audioldm_train.conditional_models import *
-import datetime
-
-from audioldm_train.utilities.model_util import (
-    exists,
-    default,
-    mean_flat,
-    count_params,
-    instantiate_from_config,
-)
-
-from audioldm_train.utilities.diffusion_util import (
-    make_beta_schedule,
-    extract_into_tensor,
-    noise_like,
-)
-
-from audioldm_train.modules.diffusionmodules.ema import LitEma
 from audioldm_train.modules.diffusionmodules.distributions import (
-    normal_kl,
     DiagonalGaussianDistribution,
+    normal_kl,
 )
-
-
+from audioldm_train.modules.diffusionmodules.ema import LitEma
 from audioldm_train.modules.latent_diffusion.ddim import DDIMSampler
 from audioldm_train.modules.latent_diffusion.plms import PLMSSampler
-import soundfile as sf
-import os
+from audioldm_train.utilities.diffusion_util import (
+    extract_into_tensor,
+    make_beta_schedule,
+    noise_like,
+)
+from audioldm_train.utilities.model_util import (
+    count_params,
+    default,
+    exists,
+    instantiate_from_config,
+    mean_flat,
+)
+from einops import rearrange, repeat
+from pytorch_lightning.utilities.rank_zero import rank_zero_only
+from torch.optim.lr_scheduler import LambdaLR
+from torchvision.utils import make_grid
+from tqdm import tqdm
 
 __conditioning_keys__ = {"concat": "c_concat", "crossattn": "c_crossattn", "adm": "y"}
 
@@ -669,12 +663,12 @@ class DDPM(pl.LightningModule):
             if isinstance(
                 self.cond_stage_models[model_idx], CLAPAudioEmbeddingClassifierFreev2
             ):
-                self.cond_stage_model_metadata[key][
-                    "cond_stage_key_orig"
-                ] = self.cond_stage_model_metadata[key]["cond_stage_key"]
-                self.cond_stage_model_metadata[key][
-                    "embed_mode_orig"
-                ] = self.cond_stage_models[model_idx].embed_mode
+                self.cond_stage_model_metadata[key]["cond_stage_key_orig"] = (
+                    self.cond_stage_model_metadata[key]["cond_stage_key"]
+                )
+                self.cond_stage_model_metadata[key]["embed_mode_orig"] = (
+                    self.cond_stage_models[model_idx].embed_mode
+                )
                 if torch.randn(1).item() < 0.5:
                     self.cond_stage_model_metadata[key]["cond_stage_key"] = "text"
                     self.cond_stage_models[model_idx].embed_mode = "text"
@@ -696,12 +690,12 @@ class DDPM(pl.LightningModule):
             if isinstance(
                 self.cond_stage_models[model_idx], CLAPAudioEmbeddingClassifierFreev2
             ):
-                self.cond_stage_model_metadata[key][
-                    "cond_stage_key_orig"
-                ] = self.cond_stage_model_metadata[key]["cond_stage_key"]
-                self.cond_stage_model_metadata[key][
-                    "embed_mode_orig"
-                ] = self.cond_stage_models[model_idx].embed_mode
+                self.cond_stage_model_metadata[key]["cond_stage_key_orig"] = (
+                    self.cond_stage_model_metadata[key]["cond_stage_key"]
+                )
+                self.cond_stage_model_metadata[key]["embed_mode_orig"] = (
+                    self.cond_stage_models[model_idx].embed_mode
+                )
                 print(
                     "Change the model original cond_keyand embed_mode %s, %s to text during evaluation"
                     % (
@@ -715,12 +709,12 @@ class DDPM(pl.LightningModule):
             if isinstance(
                 self.cond_stage_models[model_idx], CLAPGenAudioMAECond
             ) or isinstance(self.cond_stage_models[model_idx], SequenceGenAudioMAECond):
-                self.cond_stage_model_metadata[key][
-                    "use_gt_mae_output_orig"
-                ] = self.cond_stage_models[model_idx].use_gt_mae_output
-                self.cond_stage_model_metadata[key][
-                    "use_gt_mae_prob_orig"
-                ] = self.cond_stage_models[model_idx].use_gt_mae_prob
+                self.cond_stage_model_metadata[key]["use_gt_mae_output_orig"] = (
+                    self.cond_stage_models[model_idx].use_gt_mae_output
+                )
+                self.cond_stage_model_metadata[key]["use_gt_mae_prob_orig"] = (
+                    self.cond_stage_models[model_idx].use_gt_mae_prob
+                )
                 print("Change the model condition to the predicted AudioMAE tokens")
                 self.cond_stage_models[model_idx].use_gt_mae_output = False
                 self.cond_stage_models[model_idx].use_gt_mae_prob = 0.0
@@ -794,12 +788,12 @@ class DDPM(pl.LightningModule):
             if isinstance(
                 self.cond_stage_models[model_idx], CLAPAudioEmbeddingClassifierFreev2
             ):
-                self.cond_stage_model_metadata[key][
-                    "cond_stage_key"
-                ] = self.cond_stage_model_metadata[key]["cond_stage_key_orig"]
-                self.cond_stage_models[
-                    model_idx
-                ].embed_mode = self.cond_stage_model_metadata[key]["embed_mode_orig"]
+                self.cond_stage_model_metadata[key]["cond_stage_key"] = (
+                    self.cond_stage_model_metadata[key]["cond_stage_key_orig"]
+                )
+                self.cond_stage_models[model_idx].embed_mode = (
+                    self.cond_stage_model_metadata[key]["embed_mode_orig"]
+                )
                 print(
                     "Change back the embedding mode to %s %s"
                     % (
@@ -811,16 +805,12 @@ class DDPM(pl.LightningModule):
             if isinstance(
                 self.cond_stage_models[model_idx], CLAPGenAudioMAECond
             ) or isinstance(self.cond_stage_models[model_idx], SequenceGenAudioMAECond):
-                self.cond_stage_models[
-                    model_idx
-                ].use_gt_mae_output = self.cond_stage_model_metadata[key][
-                    "use_gt_mae_output_orig"
-                ]
-                self.cond_stage_models[
-                    model_idx
-                ].use_gt_mae_prob = self.cond_stage_model_metadata[key][
-                    "use_gt_mae_prob_orig"
-                ]
+                self.cond_stage_models[model_idx].use_gt_mae_output = (
+                    self.cond_stage_model_metadata[key]["use_gt_mae_output_orig"]
+                )
+                self.cond_stage_models[model_idx].use_gt_mae_prob = (
+                    self.cond_stage_model_metadata[key]["use_gt_mae_prob_orig"]
+                )
                 print(
                     "Change the AudioMAE condition setting to %s (Use gt) %s (gt prob)"
                     % (
@@ -1576,9 +1566,11 @@ class LatentDiffusion(DDPM):
         if cond is not None:
             if isinstance(cond, dict):
                 cond = {
-                    key: cond[key][:batch_size]
-                    if not isinstance(cond[key], list)
-                    else list(map(lambda x: x[:batch_size], cond[key]))
+                    key: (
+                        cond[key][:batch_size]
+                        if not isinstance(cond[key], list)
+                        else list(map(lambda x: x[:batch_size], cond[key]))
+                    )
                     for key in cond
                 }
             else:
@@ -1727,9 +1719,11 @@ class LatentDiffusion(DDPM):
         if cond is not None:
             if isinstance(cond, dict):
                 cond = {
-                    key: cond[key][:batch_size]
-                    if not isinstance(cond[key], list)
-                    else list(map(lambda x: x[:batch_size], cond[key]))
+                    key: (
+                        cond[key][:batch_size]
+                        if not isinstance(cond[key], list)
+                        else list(map(lambda x: x[:batch_size], cond[key]))
+                    )
                     for key in cond
                 }
             else:

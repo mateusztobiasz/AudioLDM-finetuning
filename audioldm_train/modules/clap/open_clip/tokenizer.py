@@ -2,11 +2,12 @@
 
 Copied from https://github.com/openai/CLIP. Originally MIT License, Copyright (c) 2021 OpenAI.
 """
+
 import gzip
 import html
 import os
 from functools import lru_cache
-from typing import Union, List
+from typing import List, Union
 
 import ftfy
 import regex as re

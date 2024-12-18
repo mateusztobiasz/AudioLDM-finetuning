@@ -6,20 +6,20 @@ import sys
 
 sys.path.append("src")
 
-import os
-import wandb
-
 import argparse
-import yaml
+import os
+
 import torch
-from pytorch_lightning.strategies.ddp import DDPStrategy
-from audioldm_train.utilities.data.dataset import AudioDataset
-from torch.utils.data import DataLoader
-from pytorch_lightning.loggers import WandbLogger
-from pytorch_lightning import Trainer
+import wandb
+import yaml
 from audioldm_train.modules.latent_encoder.autoencoder import AutoencoderKL
-from pytorch_lightning.callbacks import ModelCheckpoint
+from audioldm_train.utilities.data.dataset import AudioDataset
 from audioldm_train.utilities.tools import get_restore_step
+from pytorch_lightning import Trainer
+from pytorch_lightning.callbacks import ModelCheckpoint
+from pytorch_lightning.loggers import WandbLogger
+from pytorch_lightning.strategies.ddp import DDPStrategy
+from torch.utils.data import DataLoader
 
 
 def listdir_nohidden(path):

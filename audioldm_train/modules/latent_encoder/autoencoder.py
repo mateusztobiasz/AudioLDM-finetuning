@@ -1,26 +1,22 @@
-from email.policy import strict
-import torch
+import itertools
 import os
-
-import pytorch_lightning as pl
-import torch.nn.functional as F
 from contextlib import contextmanager
-import numpy as np
-from audioldm_train.modules.diffusionmodules.ema import *
+from email.policy import strict
 
-from torch.optim.lr_scheduler import LambdaLR
-from audioldm_train.modules.diffusionmodules.model import Encoder, Decoder
+import numpy as np
+import pytorch_lightning as pl
+import soundfile as sf
+import torch
+import torch.nn.functional as F
+import wandb
 from audioldm_train.modules.diffusionmodules.distributions import (
     DiagonalGaussianDistribution,
 )
-
-import wandb
-from audioldm_train.utilities.model_util import instantiate_from_config
-import soundfile as sf
-
-from audioldm_train.utilities.model_util import get_vocoder
+from audioldm_train.modules.diffusionmodules.ema import *
+from audioldm_train.modules.diffusionmodules.model import Decoder, Encoder
+from audioldm_train.utilities.model_util import get_vocoder, instantiate_from_config
 from audioldm_train.utilities.tools import synth_one_sample
-import itertools
+from torch.optim.lr_scheduler import LambdaLR
 
 
 class AutoencoderKL(pl.LightningModule):
@@ -164,7 +160,6 @@ class AutoencoderKL(pl.LightningModule):
         # for i in range(10):
         #     zero_input = torch.zeros_like(input) - 11.59
         #     zero_input[:,:,i * 16: i * 16 + 16,:16] += 13.59
-
         #     posterior = self.encode(zero_input)
         #     latent = posterior.sample()
         #     avg_latent = torch.mean(latent, dim=1)[0]

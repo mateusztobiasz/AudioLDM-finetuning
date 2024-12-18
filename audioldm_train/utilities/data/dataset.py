@@ -1,21 +1,21 @@
 import sys
 
 sys.path.append("src")
-import os
-import pandas as pd
-import yaml
-import audioldm_train.utilities.audio as Audio
-from audioldm_train.utilities.tools import load_json
-from audioldm_train.dataset_plugin import *
-from librosa.filters import mel as librosa_mel_fn
-
-import random
-from torch.utils.data import Dataset
-import torch.nn.functional
-import torch
-import numpy as np
-import torchaudio
 import json
+import os
+import random
+
+import audioldm_train.utilities.audio as Audio
+import numpy as np
+import pandas as pd
+import torch
+import torch.nn.functional
+import torchaudio
+import yaml
+from audioldm_train.dataset_plugin import *
+from audioldm_train.utilities.tools import load_json
+from librosa.filters import mel as librosa_mel_fn
+from torch.utils.data import Dataset
 
 
 def dynamic_range_compression_torch(x, C=1, clip_val=1e-5):
@@ -591,9 +591,9 @@ class AudioDataset(Dataset):
 
 if __name__ == "__main__":
     import torch
-    from tqdm import tqdm
     from pytorch_lightning import seed_everything
     from torch.utils.data import DataLoader
+    from tqdm import tqdm
 
     seed_everything(0)
 

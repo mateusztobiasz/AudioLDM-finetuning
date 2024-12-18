@@ -1,12 +1,12 @@
 # pytorch_diffusion + derived encoder decoder
 import math
+
+import numpy as np
 import torch
 import torch.nn as nn
-import numpy as np
-from einops import rearrange
-
-from audioldm_train.utilities.model_util import instantiate_from_config
 from audioldm_train.modules.diffusionmodules.attention import LinearAttention
+from audioldm_train.utilities.model_util import instantiate_from_config
+from einops import rearrange
 
 
 def get_timestep_embedding(timesteps, embedding_dim):

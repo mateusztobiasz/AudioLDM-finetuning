@@ -7,7 +7,7 @@ import shutil
 import pandas as pd
 from tqdm import tqdm
 
-CSV_PATH = "audiocaps_cat_dog.csv"
+CSV_PATH = "./data/dataset/audiocaps_cat_dog.csv"
 data = pd.read_csv(CSV_PATH)
 
 ROOT_DIR = "data"
@@ -22,25 +22,15 @@ os.makedirs(datafiles_dir, exist_ok=True)
 os.makedirs(testset_subset_dir, exist_ok=True)
 os.makedirs(valset_subset_dir, exist_ok=True)
 
-# # Copy audio files to the audioset directory
-# for audio_file in tqdm(data["audio"]):
-#     file_name = os.path.basename(audio_file)
-#     new_path = os.path.join(audioset_dir, file_name)
-#     os.makedirs(os.path.dirname(new_path), exist_ok=True)
-#     try:
-#         shutil.copy(audio_file, new_path)
-#     except FileNotFoundError as e:
-#         print(f"Error copying {audio_file}: {e}")
-
 train_data = []
 test_data = []
 val_data = []
 
 for i, row in data.iterrows():
     datapoint = {"wav": row["audio"], "caption": row["caption"]}
-    if i % 42 == 6:
+    if i % len(data) == 230:
         test_data.append(datapoint)
-    elif i % 42 == 1:
+    elif i % len(data) == 1:
         val_data.append(datapoint)
     else:
         train_data.append(datapoint)

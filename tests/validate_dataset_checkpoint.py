@@ -1,6 +1,7 @@
-import os
-from tqdm import tqdm
 import json
+import os
+
+from tqdm import tqdm
 
 # Define the expected structure as a dictionary
 expected_structure = {

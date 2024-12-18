@@ -11,15 +11,15 @@
 
 from functools import partial
 
-import torch
-import torch.nn as nn
 import numpy as np
 import timm.models.vision_transformer
-from timm.models.vision_transformer import PatchEmbed, Block
+import torch
+import torch.nn as nn
 from audioldm_train.modules.audiomae.util.patch_embed import (
-    PatchEmbed_new,
     PatchEmbed3D_new,
+    PatchEmbed_new,
 )
+from timm.models.vision_transformer import Block, PatchEmbed
 
 
 class VisionTransformer(timm.models.vision_transformer.VisionTransformer):

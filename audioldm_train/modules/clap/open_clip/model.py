@@ -4,24 +4,23 @@ Adapted from CLIP: https://github.com/openai/CLIP. Originally MIT License, Copyr
 Adapted to the Audio Task.
 """
 
+import logging
 from collections import OrderedDict
 from dataclasses import dataclass
 from email.mime import audio
-from typing import Tuple, Union, Callable, Optional
+from typing import Callable, Optional, Tuple, Union
 
 import numpy as np
 import torch
 import torch.nn.functional as F
 from torch import nn
-
-from .timm_model import TimmModel
-import logging
-from .utils import freeze_batch_norm_2d
-
-from .pann_model import create_pann_model
-from .htsat import create_htsat_model
-from transformers import BertModel, RobertaModel, BartModel
+from transformers import BartModel, BertModel, RobertaModel
 from transformers.tokenization_utils_base import BatchEncoding
+
+from .htsat import create_htsat_model
+from .pann_model import create_pann_model
+from .timm_model import TimmModel
+from .utils import freeze_batch_norm_2d
 
 
 class MLPLayers(nn.Module):

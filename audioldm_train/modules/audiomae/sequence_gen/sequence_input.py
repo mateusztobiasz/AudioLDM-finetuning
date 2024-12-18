@@ -1,19 +1,19 @@
-import torch
-import torch.nn as nn
 import numpy as np
 import pytorch_lightning as pl
+import torch
+import torch.nn as nn
+import torch.optim.lr_scheduler as lr_scheduler
 from audioldm_train.utilities.model_util import (
-    exists,
-    default,
-    mean_flat,
     count_params,
+    default,
+    exists,
     instantiate_from_config,
+    mean_flat,
 )
 from torch.optim import *
 
 # from audioldm_train.modules.encoders.modules import CLAPAudioEmbeddingClassifierFreev2
 from transformers import GPT2Config, GPT2Model, GPTJConfig, GPTJModel
-import torch.optim.lr_scheduler as lr_scheduler
 
 
 class Sequence2AudioMAE(pl.LightningModule):
@@ -103,9 +103,9 @@ class Sequence2AudioMAE(pl.LightningModule):
         assert (
             "crossattn_audiomae_pooled" in unconditional_conditioning.keys()
         ), "The module is not initialized with AudioMAE"
-        unconditional_conditioning[
-            "crossattn_clap_to_audiomae_feature"
-        ] = unconditional_conditioning["crossattn_audiomae_pooled"]
+        unconditional_conditioning["crossattn_clap_to_audiomae_feature"] = (
+            unconditional_conditioning["crossattn_audiomae_pooled"]
+        )
         return unconditional_conditioning
 
     def configure_optimizers(self):

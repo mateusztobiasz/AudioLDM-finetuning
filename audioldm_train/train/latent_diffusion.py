@@ -5,29 +5,25 @@
 import sys
 
 sys.path.append("src")
-import shutil
 import os
+import shutil
 
 os.environ["TOKENIZERS_PARALLELISM"] = "true"
 
 import argparse
-import yaml
+import logging
+
 import torch
-
-from tqdm import tqdm
-from pytorch_lightning.strategies.ddp import DDPStrategy
+import yaml
 from audioldm_train.utilities.data.dataset import AudioDataset
-
-from torch.utils.data import DataLoader
+from audioldm_train.utilities.model_util import instantiate_from_config
+from audioldm_train.utilities.tools import copy_test_subset_data, get_restore_step
 from pytorch_lightning import Trainer, seed_everything
 from pytorch_lightning.callbacks import ModelCheckpoint
 from pytorch_lightning.loggers import WandbLogger
-from audioldm_train.utilities.tools import (
-    get_restore_step,
-    copy_test_subset_data,
-)
-from audioldm_train.utilities.model_util import instantiate_from_config
-import logging
+from pytorch_lightning.strategies.ddp import DDPStrategy
+from torch.utils.data import DataLoader
+from tqdm import tqdm
 
 logging.basicConfig(level=logging.WARNING)
 
@@ -122,10 +118,10 @@ def main(configs, config_yaml_path, exp_group_name, exp_name, perform_validation
         monitor="val/frechet_inception_distance",
         mode="min",
         filename="checkpoint-fad-{val/frechet_inception_distance:.2f}-global_step={global_step:.0f}",
-        #every_n_train_steps=save_checkpoint_every_n_steps,
+        # every_n_train_steps=save_checkpoint_every_n_steps,
         save_top_k=1,
-        #auto_insert_metric_name=False,
-        #save_last=False,
+        # auto_insert_metric_name=False,
+        # save_last=False,
     )
 
     os.makedirs(checkpoint_path, exist_ok=True)

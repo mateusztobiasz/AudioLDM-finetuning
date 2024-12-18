@@ -1,17 +1,17 @@
-import shutil
-import os
-
 import argparse
-import yaml
+import os
+import shutil
+
 import torch
-
-from utilities.data.dataset import AudioDataset
-
-from torch.utils.data import DataLoader
-from pytorch_lightning import seed_everything
-from audioldm_train.utilities.tools import get_restore_step
+import yaml
 from audioldm_train.utilities.model_util import instantiate_from_config
-from audioldm_train.utilities.tools import build_dataset_json_from_list
+from audioldm_train.utilities.tools import (
+    build_dataset_json_from_list,
+    get_restore_step,
+)
+from pytorch_lightning import seed_everything
+from torch.utils.data import DataLoader
+from utilities.data.dataset import AudioDataset
 
 
 def infer(dataset_json, configs, config_yaml_path, exp_group_name, exp_name):

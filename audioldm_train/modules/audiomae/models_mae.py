@@ -14,17 +14,16 @@ from json import encoder
 
 import torch
 import torch.nn as nn
-
-from timm.models.vision_transformer import Block
-from audioldm_train.modules.audiomae.util.pos_embed import (
-    get_2d_sincos_pos_embed,
-    get_2d_sincos_pos_embed_flexible,
-    get_1d_sincos_pos_embed_from_grid,
-)
 from audioldm_train.modules.audiomae.util.patch_embed import (
     PatchEmbed_new,
     PatchEmbed_org,
 )
+from audioldm_train.modules.audiomae.util.pos_embed import (
+    get_1d_sincos_pos_embed_from_grid,
+    get_2d_sincos_pos_embed,
+    get_2d_sincos_pos_embed_flexible,
+)
+from timm.models.vision_transformer import Block
 
 
 class MaskedAutoencoderViT(nn.Module):

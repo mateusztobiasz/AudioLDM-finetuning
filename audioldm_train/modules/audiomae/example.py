@@ -1,13 +1,13 @@
+import models_vit
+import numpy as np
 import torch
 import torch.nn as nn
-import numpy as np
-from timm.models.layers import to_2tuple
-import models_vit
-from audiovisual_dataset import AudioVisualDataset, collate_fn
-from torch.utils.data import DataLoader
-from util.stat import calculate_stats
-from tqdm import tqdm
 from AudioMAE import AudioMAE
+from audiovisual_dataset import AudioVisualDataset, collate_fn
+from timm.models.layers import to_2tuple
+from torch.utils.data import DataLoader
+from tqdm import tqdm
+from util.stat import calculate_stats
 
 if __name__ == "__main__":
     device = "cuda"
