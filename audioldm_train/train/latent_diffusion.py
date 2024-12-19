@@ -115,9 +115,9 @@ def main(configs, config_yaml_path, exp_group_name, exp_name, perform_validation
     # )
     checkpoint_callback = ModelCheckpoint(
         dirpath=checkpoint_path,
-        monitor="val/frechet_inception_distance",
+        monitor="train/loss_simple_step",
         mode="min",
-        filename="checkpoint-fad-{val/frechet_inception_distance:.2f}-global_step={global_step:.0f}",
+        filename="checkpoint-fad-{train/loss_simple_step:.2f}-global_step={global_step:.0f}",
         # every_n_train_steps=save_checkpoint_every_n_steps,
         save_top_k=1,
         # auto_insert_metric_name=False,
