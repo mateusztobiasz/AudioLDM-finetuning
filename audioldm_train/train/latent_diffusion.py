@@ -160,7 +160,7 @@ def main(configs, config_yaml_path, exp_group_name, exp_name, perform_validation
 
     trainer = Trainer(
         accelerator="gpu",
-        max_epochs=15,
+        max_epochs=5,
         devices=devices,
         logger=wandb_logger,
         max_steps=max_steps,

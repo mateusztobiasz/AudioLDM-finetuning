@@ -7,7 +7,7 @@ import shutil
 import pandas as pd
 from tqdm import tqdm
 
-CSV_PATH = "./data/dataset/audiocaps_dog_cat.csv"
+CSV_PATH = "./data/dataset/audiocaps_cat_dog.csv"
 data = pd.read_csv(CSV_PATH)
 
 ROOT_DIR = "data"
