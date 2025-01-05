@@ -2,12 +2,10 @@
 
 import json
 import os
-import shutil
 
 import pandas as pd
-from tqdm import tqdm
 
-CSV_PATH = "./data/dataset/audiocaps_cat_dog.csv"
+CSV_PATH = "./data/dataset/cat_samples.csv"
 data = pd.read_csv(CSV_PATH)
 
 ROOT_DIR = "data"
@@ -28,7 +26,7 @@ val_data = []
 
 for i, row in data.iterrows():
     datapoint = {"wav": row["audio"], "caption": row["caption"]}
-    if i % len(data) == 230:
+    if i % len(data) == 10:
         test_data.append(datapoint)
     elif i % len(data) == 1:
         val_data.append(datapoint)

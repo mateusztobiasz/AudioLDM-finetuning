@@ -117,7 +117,7 @@ def main(configs, config_yaml_path, exp_group_name, exp_name, perform_validation
         dirpath=checkpoint_path,
         monitor="train/loss_epoch",
         mode="min",
-        filename="checkpoint-fad-{train/loss_epoch}-global_step={global_step:.0f}",
+        filename="checkpoint-fad-{train/loss_epoch}-{global_step:.0f}",
         # every_n_train_steps=save_checkpoint_every_n_steps,
         save_top_k=1,
         # auto_insert_metric_name=False,
@@ -160,7 +160,7 @@ def main(configs, config_yaml_path, exp_group_name, exp_name, perform_validation
 
     trainer = Trainer(
         accelerator="gpu",
-        max_epochs=5,
+        max_epochs=10,
         devices=devices,
         logger=wandb_logger,
         max_steps=max_steps,
