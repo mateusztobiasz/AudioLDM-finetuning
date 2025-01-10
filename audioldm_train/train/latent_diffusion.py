@@ -116,12 +116,13 @@ def main(configs, config_yaml_path, exp_group_name, exp_name, perform_validation
     checkpoint_callback = ModelCheckpoint(
         dirpath=checkpoint_path,
         monitor="train/loss_epoch",
-        mode="min",
+        #mode="min",
         filename="checkpoint-fad-{train/loss_epoch}-{global_step:.0f}",
         # every_n_train_steps=save_checkpoint_every_n_steps,
-        save_top_k=1,
+        save_top_k=-1,
+        every_n_epochs=1,
         # auto_insert_metric_name=False,
-        save_last=True,
+        #save_last=True,
     )
 
     os.makedirs(checkpoint_path, exist_ok=True)
